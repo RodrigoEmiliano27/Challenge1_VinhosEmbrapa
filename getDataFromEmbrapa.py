@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from vinho import vinho
+from uva import uva
+from utils import processaQuantidade,getTipoProcessamento  
 
 
 baseUrl = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
@@ -29,31 +31,49 @@ def getHtmlPage(option):
 def getProductionDados(ano):
     option = producaoOption+f'&ano={ano}'
     rawData = getHtmlPage(option)
-    processedData = processaRawDataMaisculas(rawData,ano)   
+    processedData = processaRawDataProducao(rawData,ano)   
     return processedData
 
-def processaQuantidade(rawData):
-    number = 0.0
-    aux = rawData.strip()
-    aux = aux.replace('.','')   
-
-    if rawData=='-':
-        return 0.0
-    
-    try:
-        number = float(aux)
-    except:
-         print(f"Could not convert {aux} to a float.")
-    
-    return number
-
+def getProcessamentoDados(ano,tipo):
+    option = processamentoOption+f'&ano={ano}&subopcao=subopt_0{tipo}'
+    rawData = getHtmlPage(option)
+    processedData = processaRawDataProcessamento(rawData,ano,tipo)   
+    return processedData
     
     
     
+def processaRawDataProcessamento(rawData,ano,tipo):
+    contador=0
+    categoriaAnalisada=''
+    dados = []
+    _uva=None
+    while contador<len(rawData):
+        if len(rawData[contador])>0:
+            if len(rawData[contador])==2:               
+                rawData[contador][0]=rawData[contador][0].strip()    
+                rawData[contador][1]=rawData[contador][1].strip() 
+                #novas categorias começam com letra maiuscula
+                if(rawData[contador][0].isupper()):
+                    if rawData[contador][0] != categoriaAnalisada:
+                        if _uva is not None:
+                            dados.append(_uva)
+                        categoriaAnalisada=rawData[contador][0]
+                        _uva = uva(categoriaAnalisada,getTipoProcessamento(tipo),processaQuantidade(rawData[contador][1]),ano)
+
+                else:
+                    _uva.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
+
+                    
+        
+        contador+=1
+
+    if _uva is not None:
+        dados.append(_uva)
+    
+    return dados
 
 
-
-def processaRawDataMaisculas(rawData,ano):
+def processaRawDataProducao(rawData,ano):
     contador=0
     categoriaAnalisada=''
     dados = []
