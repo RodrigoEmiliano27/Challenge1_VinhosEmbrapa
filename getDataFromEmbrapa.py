@@ -198,6 +198,12 @@ def getImportacaoDados(ano,tipo):
     processedData = processaRawDataImportacao(rawData,ano,tipo)   
     return processedData
 
+def getExportacaoDados(ano,tipo):
+    option = exportacaoOption+f'&ano={ano}&subopcao=subopt_0{tipo}'
+    rawData = getHtmlPage(option)
+    processedData = processaRawDataImportacao(rawData,ano,tipo)   
+    return processedData
+
 
 
 
