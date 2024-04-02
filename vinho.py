@@ -15,6 +15,7 @@ class vinho:
         return {
             'categoria': self.categoria, 
             'ano': self.ano,
+            'total': self.total,
             'subcategoria': self.subcategoria,
         }
     

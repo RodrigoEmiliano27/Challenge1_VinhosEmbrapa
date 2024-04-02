@@ -45,6 +45,10 @@ def VerificarTipoUva(tipo):
         return True
     elif tipo =='BRANCAS E ROSADAS':
         return True
+    elif tipo=='Sem classificação':
+        return True
+    elif tipo=='BRANCAS':
+        return True
     else:
         return False
     
@@ -59,14 +63,14 @@ def processaRawDataProcessamento(rawData,ano,tipo):
                 rawData[contador][0]=rawData[contador][0].strip()    
                 rawData[contador][1]=rawData[contador][1].strip() 
                 #novas categorias começam com letra maiuscula
-                if(rawData[contador][0].isupper()  and VerificarTipoUva(rawData[contador][0])):
+                if(VerificarTipoUva(rawData[contador][0])):
                     if rawData[contador][0] != categoriaAnalisada:
                         if _uva is not None:
                             dados.append(_uva)
                         categoriaAnalisada=rawData[contador][0]
                         _uva = uva(categoriaAnalisada,getTipoProcessamento(tipo),processaQuantidade(rawData[contador][1]),ano)
 
-                else:
+                elif rawData[contador][0].upper() !='TOTAL':
                     _uva.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
 
                     
@@ -97,7 +101,7 @@ def processaRawDataProducao(rawData,ano):
                         categoriaAnalisada=rawData[contador][0]
                         _vinho = vinho(categoriaAnalisada,processaQuantidade(rawData[contador][1]),ano)
 
-                else:
+                elif rawData[contador][0].upper() !='TOTAL':
                     _vinho.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
 
                     

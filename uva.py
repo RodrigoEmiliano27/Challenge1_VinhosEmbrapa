@@ -16,7 +16,9 @@ class uva:
             'tipo': self.tipo,
             'categoria': self.categoria, 
             'ano': self.ano,
+            'total': self.total,
             'subcategoria': self.subcategoria,
+            
         }
     
 
