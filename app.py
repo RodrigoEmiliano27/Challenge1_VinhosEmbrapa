@@ -1,4 +1,4 @@
-from flask import Flask,request, jsonify
+from flask import Flask,request, jsonify,abort
 from datetime import datetime
 from getDataFromEmbrapa import getProductionDados,getProcessamentoDados
 import sys, asyncio
@@ -17,7 +17,7 @@ async def getProduction():
     
     dados = getProductionDados(ano)
 
-    return jsonify(eqtls=[e.serialize() for e in dados])
+    return jsonify([e.serialize() for e in dados])
 
 @app.route('/processamento')
 async def getProcessamento():
@@ -29,6 +29,14 @@ async def getProcessamento():
     if tipo is None:
         tipo=1
     
+    try:
+        tipoAux=int(tipo)
+        if(tipoAux<=0 or tipoAux>4):
+            abort(404)
+            return
+    except:
+        abort(404)
+    
     dados = getProcessamentoDados(ano,tipo)
 
-    return jsonify(eqtls=[e.serialize() for e in dados])
+    return jsonify([e.serialize() for e in dados])

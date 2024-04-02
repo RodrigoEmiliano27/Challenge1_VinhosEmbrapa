@@ -40,7 +40,13 @@ def getProcessamentoDados(ano,tipo):
     processedData = processaRawDataProcessamento(rawData,ano,tipo)   
     return processedData
     
-    
+def VerificarTipoUva(tipo):
+    if tipo =='TINTAS':
+        return True
+    elif tipo =='BRANCAS E ROSADAS':
+        return True
+    else:
+        return False
     
 def processaRawDataProcessamento(rawData,ano,tipo):
     contador=0
@@ -53,7 +59,7 @@ def processaRawDataProcessamento(rawData,ano,tipo):
                 rawData[contador][0]=rawData[contador][0].strip()    
                 rawData[contador][1]=rawData[contador][1].strip() 
                 #novas categorias começam com letra maiuscula
-                if(rawData[contador][0].isupper()):
+                if(rawData[contador][0].isupper()  and VerificarTipoUva(rawData[contador][0])):
                     if rawData[contador][0] != categoriaAnalisada:
                         if _uva is not None:
                             dados.append(_uva)
