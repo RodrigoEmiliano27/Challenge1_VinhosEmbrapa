@@ -2,7 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from vinho import vinho
 from uva import uva
-from utils import processaQuantidade,getTipoProcessamento  
+from comercializacao import comercializacao
+from utils import processaQuantidade,getTipoProcessamento
+
 
 
 baseUrl = 'http://vitibrasil.cnpuv.embrapa.br/index.php?'
@@ -28,17 +30,7 @@ def getHtmlPage(option):
 
     return data
 
-def getProductionDados(ano):
-    option = producaoOption+f'&ano={ano}'
-    rawData = getHtmlPage(option)
-    processedData = processaRawDataProducao(rawData,ano)   
-    return processedData
 
-def getProcessamentoDados(ano,tipo):
-    option = processamentoOption+f'&ano={ano}&subopcao=subopt_0{tipo}'
-    rawData = getHtmlPage(option)
-    processedData = processaRawDataProcessamento(rawData,ano,tipo)   
-    return processedData
     
 def VerificarTipoUva(tipo):
     if tipo =='TINTAS':
@@ -48,6 +40,28 @@ def VerificarTipoUva(tipo):
     elif tipo=='Sem classificação':
         return True
     elif tipo=='BRANCAS':
+        return True
+    else:
+        return False
+
+def VerificarTipoComercializacao(tipo):
+    if tipo =='VINHO DE MESA':
+        return True
+    elif tipo =='VINHO FINO DE MESA':
+        return True
+    elif tipo=='VINHO FRIZANTE':
+        return True
+    elif tipo=='VINHO ORGÂNICO':
+        return True
+    elif tipo=='VINHO ESPECIAL':
+        return True
+    elif tipo=='ESPUMANTES':
+        return True
+    elif tipo=='SUCO DE UVAS':
+        return True
+    elif tipo=='SUCO DE UVAS CONCENTRADO':
+        return True
+    elif tipo=='OUTROS PRODUTOS COMERCIALIZADOS':
         return True
     else:
         return False
@@ -72,15 +86,36 @@ def processaRawDataProcessamento(rawData,ano,tipo):
 
                 elif rawData[contador][0].upper() !='TOTAL':
                     _uva.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
-
-                    
-        
-        contador+=1
-
-    if _uva is not None:
-        dados.append(_uva)
     
-    return dados
+def processamentoRawDataComercializacao(rawData,ano):
+        contador=0
+        categoriaAnalisada=''
+        dados = []
+        _comercializacao=None
+        while contador<len(rawData):
+            if len(rawData[contador])>0:
+                if len(rawData[contador])==2:               
+                    rawData[contador][0]=rawData[contador][0].strip()    
+                    rawData[contador][1]=rawData[contador][1].strip() 
+                    #novas categorias começam com letra maiuscula
+                    if(VerificarTipoComercializacao(rawData[contador][0])):
+                        if rawData[contador][0] != categoriaAnalisada:
+                            if _comercializacao is not None:
+                                dados.append(_comercializacao)
+                            categoriaAnalisada=rawData[contador][0]
+                            _comercializacao = comercializacao(categoriaAnalisada,processaQuantidade(rawData[contador][1]),ano)
+
+                    elif rawData[contador][0].upper() !='TOTAL':
+                        _comercializacao.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
+
+                        
+            
+            contador+=1
+
+        if _comercializacao is not None:
+            dados.append(_comercializacao)
+        
+        return dados
 
 
 def processaRawDataProducao(rawData,ano):
@@ -115,6 +150,24 @@ def processaRawDataProducao(rawData,ano):
     
 
 #getProductionDados(2021)
+
+def getProductionDados(ano):
+    option = producaoOption+f'&ano={ano}'
+    rawData = getHtmlPage(option)
+    processedData = processaRawDataProducao(rawData,ano)   
+    return processedData
+
+def getProcessamentoDados(ano,tipo):
+    option = processamentoOption+f'&ano={ano}&subopcao=subopt_0{tipo}'
+    rawData = getHtmlPage(option)
+    processedData = processaRawDataProcessamento(rawData,ano,tipo)   
+    return processedData
+
+def getComercializacaoDados(ano):
+    option = comercializacaoOption+f'&ano={ano}'
+    rawData = getHtmlPage(option)
+    processedData = processamentoRawDataComercializacao(rawData,ano)   
+    return processedData
 
 
 
