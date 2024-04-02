@@ -24,3 +24,15 @@ def getTipoProcessamento(tipo):
         return 'Sem classificação'
     else:
         return 'erro'
+    
+def getTipoImportacao(tipo):
+    if tipo == '1':
+        return 'Vinhos de mesa'
+    elif tipo == '2':
+        return 'Espumantes'
+    elif tipo == '3':
+        return 'Uvas frescas'
+    elif tipo =='4':
+        return 'Suco de uva'
+    else:
+        return 'erro'

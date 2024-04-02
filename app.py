@@ -1,6 +1,6 @@
 from flask import Flask,request, jsonify,abort
 from datetime import datetime
-from getDataFromEmbrapa import getProductionDados,getProcessamentoDados,getComercializacaoDados
+from getDataFromEmbrapa import getProductionDados,getProcessamentoDados,getComercializacaoDados,getImportacaoDados
 import sys, asyncio
 
 if sys.platform == "win32" and sys.version_info >= (3, 8, 0):
@@ -51,3 +51,28 @@ async def getComercializacao():
     dados = getComercializacaoDados(ano)
 
     return jsonify([e.serialize() for e in dados])
+
+
+@app.route('/importacao')
+async def getImportacao():
+    ano = request.args.get('ano', default=None)
+    tipo = request.args.get('tipo', default=None)   
+    if ano is None:
+        ano=datetime.now().year
+
+    if tipo is None:
+        tipo=1
+    
+    try:
+        tipoAux=int(tipo)
+        if(tipoAux<=0 or tipoAux>4):
+            abort(404)
+            return
+    except:
+        abort(404)
+    
+    dados = getImportacaoDados(ano,tipo)
+
+    return jsonify([e.serialize() for e in dados])
+
+

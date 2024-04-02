@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 from vinho import vinho
 from uva import uva
 from comercializacao import comercializacao
-from utils import processaQuantidade,getTipoProcessamento
+from importacao import importacao   
+from utils import processaQuantidade,getTipoProcessamento,getTipoImportacao
 
 
 
@@ -147,6 +148,28 @@ def processaRawDataProducao(rawData,ano):
         dados.append(_vinho)
     
     return dados
+
+def processaRawDataImportacao(rawData,ano,tipo):
+    contador=0
+    dados = []
+    while contador<len(rawData):
+        if len(rawData[contador])>0:
+            if len(rawData[contador])==3:               
+                rawData[contador][0]=rawData[contador][0].strip()    
+                rawData[contador][1]=rawData[contador][1].strip() 
+                rawData[contador][2]=rawData[contador][2].strip() 
+                #novas categorias começam com letra maiuscula
+                if(rawData[contador][0].upper()!='TOTAL'):
+                    _importacao = importacao(rawData[contador][0],processaQuantidade(rawData[contador][1]),
+                                                 processaQuantidade(rawData[contador][2]),ano,getTipoImportacao(tipo))
+                    
+                    dados.append(_importacao)
+
+                    
+        
+        contador+=1
+
+    return dados
     
 
 #getProductionDados(2021)
@@ -167,6 +190,12 @@ def getComercializacaoDados(ano):
     option = comercializacaoOption+f'&ano={ano}'
     rawData = getHtmlPage(option)
     processedData = processamentoRawDataComercializacao(rawData,ano)   
+    return processedData
+
+def getImportacaoDados(ano,tipo):
+    option = importacaoOption+f'&ano={ano}&subopcao=subopt_0{tipo}'
+    rawData = getHtmlPage(option)
+    processedData = processaRawDataImportacao(rawData,ano,tipo)   
     return processedData
 
 
