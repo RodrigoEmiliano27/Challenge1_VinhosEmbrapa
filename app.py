@@ -1,12 +1,35 @@
 from flask import Flask,request, jsonify,abort
 from datetime import datetime
-from getDataFromEmbrapa import getProductionDados,getProcessamentoDados,getComercializacaoDados,getImportacaoDados,getExportacaoDados
+from controllers import Embrapa
 import sys, asyncio
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
+from controllers.login import Login
+
 
 if sys.platform == "win32" and sys.version_info >= (3, 8, 0):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 app = Flask(__name__)
+
+app.config.from_object('config.Config')
+
+jwt = JWTManager(app)
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username', None)
+    password = request.json.get('password', None)
+
+    result = Login().validade_user(username,password)
+
+    if(result == True):
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token)
+    else:
+        return jsonify({"msg": "Bad username or password"}), 401
+
 
 
 @app.route('/producao')
@@ -15,7 +38,7 @@ async def getProduction():
     if ano is None:
         ano=datetime.now().year
     
-    dados = getProductionDados(ano)
+    dados = Embrapa().getProductionDados(ano)
 
     return jsonify([e.serialize() for e in dados])
 
@@ -37,7 +60,7 @@ async def getProcessamento():
     except:
         abort(404)
     
-    dados = getProcessamentoDados(ano,tipo)
+    dados = Embrapa().getProcessamentoDados(ano,tipo)
 
     return jsonify([e.serialize() for e in dados])
 
@@ -48,7 +71,7 @@ async def getComercializacao():
     if ano is None:
         ano=datetime.now().year
 
-    dados = getComercializacaoDados(ano)
+    dados = Embrapa().getComercializacaoDados(ano)
 
     return jsonify([e.serialize() for e in dados])
 
@@ -71,7 +94,7 @@ async def getImportacao():
     except:
         abort(404)
     
-    dados = getImportacaoDados(ano,tipo)
+    dados = Embrapa().getImportacaoDados(ano,tipo)
 
     return jsonify([e.serialize() for e in dados])
 
@@ -93,8 +116,10 @@ async def getExportacao():
     except:
         abort(404)
     
-    dados = getExportacaoDados(ano,tipo)
+    dados = Embrapa().getExportacaoDados(ano,tipo)
 
     return jsonify([e.serialize() for e in dados])
 
 
+if __name__ == '__main__':
+    app.run()
