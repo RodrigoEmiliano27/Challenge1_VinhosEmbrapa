@@ -33,6 +33,7 @@ def login():
 
 
 @app.route('/producao')
+@jwt_required()
 async def getProduction():
     ano = request.args.get('ano', default=None)
     if ano is None:
@@ -43,6 +44,7 @@ async def getProduction():
     return jsonify([e.serialize() for e in dados])
 
 @app.route('/processamento')
+@jwt_required()
 async def getProcessamento():
     ano = request.args.get('ano', default=None)
     tipo = request.args.get('tipo', default=None)   
@@ -66,6 +68,7 @@ async def getProcessamento():
 
 
 @app.route('/comercializacao')
+@jwt_required()
 async def getComercializacao():
     ano = request.args.get('ano', default=None)
     if ano is None:
@@ -77,6 +80,7 @@ async def getComercializacao():
 
 
 @app.route('/importacao')
+@jwt_required()
 async def getImportacao():
     ano = request.args.get('ano', default=None)
     tipo = request.args.get('tipo', default=None)   
@@ -99,6 +103,7 @@ async def getImportacao():
     return jsonify([e.serialize() for e in dados])
 
 @app.route('/exportacao')
+@jwt_required()
 async def getExportacao():
     ano = request.args.get('ano', default=None)
     tipo = request.args.get('tipo', default=None)   
