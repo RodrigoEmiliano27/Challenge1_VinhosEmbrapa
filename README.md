@@ -21,12 +21,18 @@
     source venv/bin/activate 
     ```
 
-3. **Install the required packages**:
+3. **Instalar as bibliotecas necessárias**:
 
     ```sh
     pip install -r requirements.txt
     ```
+## Execução
 
+Na pasta do projeto, digite:
+
+```
+    python app.py
+```
 ## Integrantes do grupo
 
 | Membro | RM |
