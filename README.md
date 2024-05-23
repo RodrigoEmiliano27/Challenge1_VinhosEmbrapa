@@ -43,6 +43,9 @@ Na pasta do projeto, digite:
 
 ![teste](https://github.com/RodrigoEmiliano27/Challenge1_VinhosEmbrapa/assets/62484044/da283f06-33ec-4494-bb03-cf96c5fd9002)
 
+## Plano de Deploy
+
+![19a9dc90-ee00-45e1-aa3f-24f44ddeb9c5](https://github.com/RodrigoEmiliano27/Challenge1_VinhosEmbrapa/assets/55152520/519bdf7c-7533-44db-bb32-c18b79032092)
 
 ## Integrantes do grupo
 
