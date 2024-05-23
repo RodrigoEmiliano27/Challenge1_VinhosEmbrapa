@@ -35,11 +35,11 @@ Na pasta do projeto, digite:
 ```
 
 
-## Diagrama de arquitetura do modelo
+## Arquitetura do modelo
 
 ![doc2](https://github.com/RodrigoEmiliano27/Challenge1_VinhosEmbrapa/assets/62484044/d879f30c-fb9c-485f-8618-5ee4020f63b4)
 
-## Diagrama de arquitetura de classes
+## Diagrama de classes da aplicação
 
 ![teste](https://github.com/RodrigoEmiliano27/Challenge1_VinhosEmbrapa/assets/62484044/da283f06-33ec-4494-bb03-cf96c5fd9002)
 
