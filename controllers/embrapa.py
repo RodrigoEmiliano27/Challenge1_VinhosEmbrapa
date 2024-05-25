@@ -88,7 +88,9 @@ class Embrapa():
 
                     elif rawData[contador][0].upper() !='TOTAL':
                         _uva.addSubcategoria(rawData[contador][0],processaQuantidade(rawData[contador][1]))
-        
+            contador+=1
+        return dados
+    
     def processamentoRawDataComercializacao(self, rawData,ano):
             contador=0
             categoriaAnalisada=''
