@@ -34,6 +34,14 @@ Na pasta do projeto, digite:
     python app.py
 ```
 
+## Acessar Documentação SWAGGER
+
+Com o projeto em execução, acesse:
+
+```
+    localhost:5000/apidocs
+```
+
 
 ## Arquitetura do modelo
 
