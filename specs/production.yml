@@ -1,0 +1,15 @@
+parameters:
+  - name: ano
+    in: query
+    type: integer
+    required: false
+    description: Ano da produção
+responses:
+  200:
+    description: Dados de produção
+    examples:
+      application/json:
+        - field1: value1
+          field2: value2
+security:
+  - Bearer: []

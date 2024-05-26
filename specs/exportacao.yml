@@ -1,0 +1,38 @@
+parameters:
+  - name: ano
+    in: query
+    required: false
+    schema:
+      type: integer
+    description: "Ano de exportação"
+  - name: tipo
+    in: query
+    required: false
+    schema:
+      type: integer
+    description: "Tipo de dados de exportação para ser analisado"
+security:
+  - Bearer: []
+responses:
+  '200':
+    description: "Dados de exportação"
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              field1:
+                type: string
+              field2:
+                type: string
+  '404':
+    description: "Not found"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string

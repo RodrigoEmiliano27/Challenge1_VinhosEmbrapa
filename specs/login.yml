@@ -1,0 +1,26 @@
+summary: "Realiza Login"
+requestBody:
+  description: "Credenciais de acesso"
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          username:
+            type: string
+            example: admin
+          password:
+            type: string
+            example: admin
+  required: true
+responses:
+  200:
+    description: Token de acesso gerado com sucesso
+    examples:
+      application/json:
+        access_token: "token"
+  401:
+    description: Usuário ou senha inválidos
+    examples:
+      application/json:
+        msg: "Bad username or password"

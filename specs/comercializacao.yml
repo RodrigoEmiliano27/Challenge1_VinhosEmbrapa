@@ -1,0 +1,23 @@
+parameters:
+  - name: ano
+    in: query
+    required: false
+    schema:
+      type: integer
+    description: "Ano de comercialização"
+security:
+  - Bearer: []
+responses:
+  '200':
+    description: "Dados de comercialização"
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              field1:
+                type: string
+              field2:
+                type: string
