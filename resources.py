@@ -9,13 +9,17 @@ from controllers.login import Login
 class LoginResource(Resource):
     @swag_from('specs/login.yml')
     def post(self):
-        username = request.json.get('username', None)
-        password = request.json.get('password', None)
-        if Login().validade_user(username, password):
-            access_token = create_access_token(identity=username)
-            return jsonify(access_token=access_token)
-        else:
-            return jsonify({"msg": "Bad username or password"}), 401
+        try:
+            username = request.json.get('username', None)
+            password = request.json.get('password', None)
+            ret = Login().validade_user(username, password) == True
+            if ret == True:
+                access_token = create_access_token(identity=username)
+                return jsonify(access_token=access_token)
+            else:
+                return {"msg": "Bad username or password"}, 401
+        except:
+            return {"msg": "Bad username or password"}, 401
 
 class ProductionResource(Resource):
     @jwt_required()
