@@ -41,6 +41,38 @@ Com o projeto em execução, acesse:
 ```
     localhost:5000/apidocs
 ```
+### Credenciais de login válidas
+
+Para ter acesso ás rotas é necessário fazer login na aplicação. Utilize as seguintes credenciais para ter acesso ao sistema
+
+
+| User | senha |
+| ------ | -------------- |
+| admin | senha |
+| guilherme | senha |
+| rodrigo | senha |
+| yago | senha |
+
+
+
+### Como passar o token de acesso no swagger
+
+Após realizar login, você receberá um token de acesso. Para ter acesso ás rotas da aplicação, você deve preencher abrir o menu Authorize como mostrado na figura abaixo.
+
+![campo](./docs/configuração_swagger.png)
+
+No campo **value** insira: 
+
+```
+    Bearer {TOKEN RECEBIDO} 
+```
+
+Exemplo:
+
+```
+    Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjg1NTA5NiwianRpIjoiZTZhMDhmZjEtZmM0MS00OTBiLTkwMjctNjg1YzEyMWM0Yjg0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFkbWluIiwibmJmIjoxNzE2ODU1MDk2LCJjc3JmIjoiNTY5MTdmZmEtMWZjNy00ZmM1LTg5M2UtZGM0NzJjMjFjNTk4IiwiZXhwIjoxNzE2ODU1OTk2fQ.pWJW-nyuCuZMlI4xnHAoA3-ei8B-ZrU3dEs33gne7o0
+```
+
 
 
 ## Arquitetura do modelo
