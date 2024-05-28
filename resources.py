@@ -20,19 +20,21 @@ class LoginResource(Resource):
 class ProductionResource(Resource):
     @jwt_required()
     @swag_from('specs/production.yml')
-    async def get(self):
-        ano = request.args.get('ano', default=None)
-        if ano is None:
-            ano = datetime.now().year
-        dados = Embrapa().getProductionDados(ano)
-        return jsonify([e.serialize() for e in dados])
-
+    def get(self):
+        try:
+            ano = request.args.get('ano', default=None)
+            if ano is None:
+                ano = datetime.now().year
+            dados = Embrapa().getProductionDados(ano)
+            return jsonify([e.serialize() for e in dados])
+        except:
+            abort(404)
 
 
 class ProcessamentoResource(Resource):
     @jwt_required()    
     @swag_from('specs/processamento.yml')
-    async def get(self):
+    def get(self):
         ano = request.args.get('ano', default=None)
         tipo = request.args.get('tipo', default=None)
         if ano is None:
@@ -53,17 +55,24 @@ class ProcessamentoResource(Resource):
 class ComercializacaoResource(Resource):
     @jwt_required()
     @swag_from('specs/comercializacao.yml')
-    async def get(self):
-        ano = request.args.get('ano', default=None)
-        if ano is None:
-            ano = datetime.now().year
-        dados = Embrapa().getComercializacaoDados(ano)
-        return jsonify([e.serialize() for e in dados])
-
+    def get(self):
+        print("bateu comercializacao")
+        try:
+            ano = request.args.get('ano', default=None)
+            if ano is None:
+                ano = datetime.now().year
+            dados = Embrapa().getComercializacaoDados(ano)
+            if(len(dados)>0):
+                print(len(dados))
+                out = [e.serialize() for e in dados]
+                return jsonify(out)
+            return ""
+        except:
+            abort(404)
 class ImportacaoResource(Resource):
     @jwt_required()
     @swag_from('specs/importacao.yml')
-    async def get(self):
+    def get(self):
         ano = request.args.get('ano', default=None)
         tipo = request.args.get('tipo', default=None)
         if ano is None:
@@ -83,7 +92,7 @@ class ImportacaoResource(Resource):
 class ExportacaoResource(Resource):
     @jwt_required()
     @swag_from('specs/exportacao.yml')
-    async def get(self):
+    def get(self):
         ano = request.args.get('ano', default=None)
         tipo = request.args.get('tipo', default=None)
         if ano is None:

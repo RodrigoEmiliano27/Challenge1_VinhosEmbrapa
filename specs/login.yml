@@ -1,18 +1,20 @@
 summary: "Realiza Login"
-requestBody:
-  description: "Credenciais de acesso"
-  content:
-    application/json:
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+    - in: "body"
+      name: "body"
+      description: "Production data to be created"
+      required: true
       schema:
-        type: object
+        type: "object"
         properties:
           username:
             type: string
-            example: admin
           password:
             type: string
-            example: admin
-  required: true
 responses:
   200:
     description: Token de acesso gerado com sucesso
